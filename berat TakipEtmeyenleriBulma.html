@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <title>INSTAGRAM TAKİP ETMEYENLERİ BULMA ARACI - Berat ERSÖZLÜ</title>
+    <meta name="description"
+        content="Instagram takip ettiğiniz halde sizi takip etmeyen hesapları kolayca bulun! Hızlı, güvenli ve kullanımı basit web tabanlı araç.">
+    <meta name="keywords" content="instagram, beni takip etmeyenler, unfollow, araç, tool, sosyal medya, analiz, takipçi, following">
+    <meta name="author" content="Berat ERSÖZLÜ">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Genel Stil */
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #38adb8;
+            color: #212529;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        /* Başlık Kutusu */
+        .title-container {
+            background-color: #f8f9fa;
+            /* Açık gri arka plan */
+            /*border: 1px solid #212529;*/
+            /* Kenarlığı kaldırıyoruz */
+            padding: 20px;
+            text-align: center;
+            color: #0056b3;
+            /* Koyu mavi yazı */
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            width: 95%;
+            /* Genişlik */
+            max-width: 900px;
+            /* Maksimum genişlik */
+            box-sizing: border-box;
+            /* Padding'in genişliğe dahil olması için */
+            border-radius: 12px;
+            /* Köşeleri yuvarlat */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            /* Gölge ekle */
+        }
+
+        /* Ana Konteyner */
+        .container {
+            width: 95%;
+            max-width: 900px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Sol ve Sağ Paneller */
+        .left-panel,
+        .right-panel {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .left-panel {
+            border-right: 2px solid #e0e0e0;
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        /* Dosya Seçme */
+        .file-input-wrapper {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+            font-size: 0.85rem;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.85rem;
+        }
+
+        /* Butonlar */
+        button {
+            background-color: #38adb8;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease-in-out;
+            margin-bottom: 10px;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Sayaç Bilgisi */
+        #counter {
+            margin-top: 10px;
+            color: #495057;
+            font-size: 0.85rem;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        /* Sonuç Listesi */
+        .results-list-container {
+            overflow-y: auto;
+            max-height: 350px;
+            border: 2px solid #e0e0e0;
+            padding: 12px;
+            border-radius: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            flex-grow: 1;
+            min-height: 50px;
+            background-color: #f1f1f1;
+        }
+
+        /* Bağlantı Stilleri */
+        .results-list-container a {
+            display: block;
+            padding: 6px;
+            margin-bottom: 5px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            border-radius: 5px;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .results-list-container a:hover {
+            background-color: #d4e4fc;
+            text-decoration: underline;
+        }
+
+        /* Geliştirici Kısmı */
+        .developer {
+            text-align: center;
+            color: #444;
+            font-size: 1rem;
+            margin-top: 35px;
+            padding: 12px 18px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        /* Gece Modu */
+        .dark-mode {
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+        }
+
+        .dark-mode .container {
+            background-color: #252525;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+            border: 2px solid #333;
+        }
+
+        .dark-mode .panel-title,
+        .dark-mode label,
+        .dark-mode #counter,
+        .dark-mode .developer {
+            color: #f0f0f0;
+        }
+
+        .dark-mode button {
+            background-color: #3a77d8;
+            color: #f0f0f0;
+        }
+
+        .dark-mode button:hover {
+            background-color: #28548f;
+        }
+
+        .dark-mode .results-list-container {
+            border-color: #333;
+            background-color: #3a3a3a;
+        }
+
+        .dark-mode .results-list-container a {
+            color: #6dd5ed;
+        }
+
+        .dark-mode .results-list-container a:hover {
+            color: #a3ebff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title-container">
+        \--- INSTAGRAM-TAKİP ETMEYENLERİ BULMA ARACI ---/
+    </div>
+    <div class="container">
+        <div class="left-panel">
+            <h2 class="panel-title">INSTAGRAM VERİLERİNİ EKLE</h2>
+            <div class="file-input-wrapper">
+                <label for="followingFile">Takip Ettiklerim (following.html):</label>
+                <input type="file" id="followingFile" accept=".html">
+            </div>
+            <div class="file-input-wrapper">
+                <label for="followersFile">Beni Takip Edenler (followers_1.html):</label>
+                <input type="file" id="followersFile" accept=".html">
+            </div>
+            <button onclick="analyzeFiles()">Beni Takip Etmeyenleri Bul</button>
+            <button onclick="toggleDarkMode()">Gece/Gündüz Modu</button>
+            <button onclick="downloadTxt()">Verileri Dışa Aktar</button>
+            <button id="resetButton" onclick="resetTool()">Sıfırla</button>
+            <div id="counter">
+                <div><span>Takip Ettiklerim:</span> <span class="counter-value">0</span></div>
+                <div><span>Beni Takip Edenler:</span> <span class="counter-value">0</span></div>
+                <div><span>Beni Takip Etmeyenler:</span> <span class="counter-value">0</span></div>
+            </div>
+        </div>
+        <div class="right-panel">
+            <h2 class="panel-title">BENİ TAKİP ETMEYENLER</h2>
+            <div class="results-list-container" id="resultsListContainer">
+                <div class="results-list-left" id="resultsListLeft"></div>
+                <div class="results-list-right" id="resultsListRight"></div>
+            </div>
+        </div>
+    </div>
+    <div>Bu yazılım <a href="https://www.linkedin.com/in/beratersozlu/" target="_blank">BERAT ERSÖZLÜ</a> tarafından
+        geliştirilmiştir.</div>
+
+    <script>
+        let following = [];
+        let followers = [];
+        const followingFileInput = document.getElementById('followingFile');
+        const followersFileInput = document.getElementById('followersFile');
+        const resultsListLeftDiv = document.getElementById('resultsListLeft');
+        const resultsListRightDiv = document.getElementById('resultsListRight');
+        const counterDiv = document.getElementById('counter');
+        const body = document.body;
+        let darkMode = false;
+
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            body.classList.toggle('dark-mode');
+        }
+
+        function downloadTxt() {
+            const leftLinks = resultsListLeftDiv.querySelectorAll('a');
+            const rightLinks = resultsListRightDiv.querySelectorAll('a');
+            if (leftLinks.length === 0 && rightLinks.length === 0) {
+                alert("Listede aktarılacak bir şey yok.");
+                return;
+            }
+            let text = "Beni Takip Etmeyenlerin Instagram Linkleri:\n";
+            leftLinks.forEach(link => {
+                text += link.href + "\n";
+            });
+            rightLinks.forEach(link => {
+                text += link.href + "\n";
+            });
+            const filename = "beni_takip_etmeyenler_linkler.txt";
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        function parseHTML(htmlString) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlString, 'text/html');
+            const links = doc.querySelectorAll('a[href*="instagram.com/"]');
+            return Array.from(links).map(link => link.href.split('/').pop());
+        }
+
+        async function readFileAsync(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    resolve(reader.result);
+                };
+                reader.onerror = reject;
+                reader.readAsText(file);
+            });
+        }
+
+        async function analyzeFiles() {
+            const followingFile = followingFileInput.files[0];
+            const followersFile = followersFileInput.files[0];
+
+            if (!followingFile || !followersFile) {
+                alert('Lütfen iki dosyayı da seçin.');
+                return;
+            }
+
+            try {
+                const followingHTML = await readFileAsync(followingFile);
+                const followersHTML = await readFileAsync(followersFile);
+
+                if (!followingHTML || !followersHTML) {
+                    alert('Dosyalar okunamadı veya boş.');
+                    counterDiv.innerHTML = `
+                        <div><span>Takip Ettiklerim:</span> <span class="counter-value">Hata</span></div>
+                        <div><span>Beni Takip Edenler:</span> <span class="counter-value">Hata</span></div>
+                        <div><span>Beni Takip Etmeyenler:</span> <span class="counter-value">Hata</span></div>
+                    `;
+                    return;
+                }
+
+                following = parseHTML(followingHTML);
+                followers = parseHTML(followersHTML);
+
+                const notFollowingBack = following.filter(user => !followers.includes(user));
+                const followingCount = following.length;
+                const followersCount = followers.length;
+                const notFollowingBackCount = notFollowingBack.length;
+
+                counterDiv.innerHTML = `
+                    <div><span>Takip Ettiklerim:</span> <span class="counter-value">${followingCount}</span></div>
+                    <div><span>Beni Takip Edenler:</span> <span class="counter-value">${followersCount}</span></div>
+                    <div><span>Beni Takip Etmeyenler:</span> <span class="counter-value">${notFollowingBackCount}</span></div>
+                `;
+                resultsListLeftDiv.innerHTML = '';
+                resultsListRightDiv.innerHTML = '';
+
+                const halfLength = Math.ceil(notFollowingBack.length / 2);
+                notFollowingBack.forEach((username, index) => {
+                    const link = document.createElement('a');
+                    link.href = `https://www.instagram.com/${username}/`;
+                    link.textContent = username;
+                    link.target = '_blank';
+                    if (index < halfLength) {
+                        resultsListLeftDiv.appendChild(link);
+                    } else {
+                        resultsListRightDiv.appendChild(link);
+                    }
+                });
+            } catch (error) {
+                console.error("Dosya okuma veya analiz sırasında bir hata oluştu:", error);
+                alert("Dosya okuma veya analiz sırasında bir hata oluştu. Lütfen dosyaları kontrol edin ve tekrar deneyin.");
+                counterDiv.innerHTML = `
+                    <div><span>Takip Ettiklerim:</span> <span class="counter-value">Hata</span></div>
+                    <div><span>Beni Takip Edenler:</span> <span class="counter-value">Hata</span></div>
+                    <div><span>Beni Takip Etmeyenler:</span> <span class="counter-value">Hata</span></div>
+                `;
+            }
+        }
+
+        function resetTool() {
+            following = [];
+            followers = [];
+            followingFileInput.value = '';
+            followersFileInput.value = '';
+            resultsListLeftDiv.innerHTML = '';
+            resultsListRightDiv.innerHTML = '';
+            counterDiv.innerHTML = `
+                <div><span>Takip Ettiklerim:</span> <span class="counter-value">0</span></div>
+                <div><span>Beni Takip Edenler:</span> <span class="counter-value">0</span></div>
+                <div><span>Beni Takip Etmeyenler:</span> <span class="counter-value">0</span></div>
+            `;
+            const resultsContainer = document.getElementById('resultsListContainer');
+            resultsContainer.style.height = 'auto';
+        }
+
+        // Sayacı başlangıçta sıfır olarak ayarla
+        counterDiv.innerHTML = `
+            <div><span>Takip Ettiklerim:</span> <span class="counter-value">0</span></div>
+            <div><span>Beni Takip Edenler:</span> <span class="counter-value">0</span></div>
+            <div><span>Beni Takip Etmeyenler:</span> <span class="counter-value">0</span></div>
+        `;
+    </script>
+</body>
+
+</html>
